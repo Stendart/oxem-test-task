@@ -9,26 +9,9 @@
                         {{tabName}}
                     </th>
                 </tr>
-<!--                <tr>-->
-<!--                    <th @click="sortedBy($event, 'id')" ref="id" data-sort_dir="up" >-->
-<!--                        id-->
-<!--                    </th>-->
-<!--                    <th @click="sortedBy($event, 'firstName')" ref="firstName" data-sort_dir="up">-->
-<!--                        firstName-->
-<!--                    </th>-->
-<!--                    <th @click="sortedBy($event, 'lastName')" ref="lastName" data-sort_dir="up">-->
-<!--                        lastName-->
-<!--                    </th>-->
-<!--                    <th @click="sortedBy($event, 'email')" ref="email" data-sort_dir="up">-->
-<!--                        email-->
-<!--                    </th>-->
-<!--                    <th @click="sortedBy($event, 'phone')" ref="phone" data-sort_dir="up">-->
-<!--                        phone-->
-<!--                    </th>-->
-<!--                </tr>-->
             </thead>
             <tbody>
-                <tr v-for="p in peopleList" :key="p.id">
+                <tr v-for="p in peopleList" :key="p.myId">
                     <td>{{p.id}}</td>
                     <td>{{p.firstName}}</td>
                     <td>{{p.lastName}}</td>
@@ -49,11 +32,12 @@ const SORTED_DIRECTION = {
 export default {
 name: "TableComponent",
   props: {
-    peopleList: Array
+    peopleList: Array,
+    tableHead: Array
   },
   data() {
       return {
-        tableHead: ['id', 'firstName', 'lastName', 'email', 'phone']
+        idx: 0
       }
   },
   methods: {
@@ -62,11 +46,14 @@ name: "TableComponent",
 
       this.deleteClassList(SORTED_DIRECTION)
 
-      const sortDirection = target.dataset.sort_dir
-
-      switch (sortDirection) {
+      this.$emit('sortData', sortField, target)
+      //const sortDirection = target.dataset.sort_dir
+      /*switch (sortDirection) {
         case SORTED_DIRECTION.up :
-          this.peopleList.sort((a, b)=> a[sortField] < b[sortField] ? -1 : 1)
+          this.peopleList.sort((a, b)=> {
+            console.log('Элемент === ', a[sortField])
+            return a[sortField] < b[sortField] ? -1 : 1
+          })
           target.setAttribute('data-sort_dir', SORTED_DIRECTION.down)
           target.classList.remove(SORTED_DIRECTION.down)
           target.classList.add(SORTED_DIRECTION.up)
@@ -77,7 +64,7 @@ name: "TableComponent",
           target.classList.remove(SORTED_DIRECTION.up)
           target.classList.add(SORTED_DIRECTION.down)
           break
-      }
+      }*/
     },
     deleteClassList(classList = {}) {
       const classArr = Object.keys(classList)
@@ -86,8 +73,8 @@ name: "TableComponent",
           this.$refs[el][0].classList?.remove(className)
         })
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -159,11 +146,15 @@ name: "TableComponent",
     }
 
     .up:after {
-        content: '\2191';  /*  \2193  */
+        content: '\2191';
+        position: absolute;
+        margin-left: 10px;
     }
 
     .down:after {
-        content: '\2193';  /*  \2193  */
+        content: '\2193';
+        position: absolute;
+        margin-left: 10px;
     }
 
 </style>
