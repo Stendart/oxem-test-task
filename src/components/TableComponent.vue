@@ -47,25 +47,8 @@ name: "TableComponent",
       this.deleteClassList(SORTED_DIRECTION)
 
       this.$emit('sortData', sortField, target)
-      //const sortDirection = target.dataset.sort_dir
-      /*switch (sortDirection) {
-        case SORTED_DIRECTION.up :
-          this.peopleList.sort((a, b)=> {
-            console.log('Элемент === ', a[sortField])
-            return a[sortField] < b[sortField] ? -1 : 1
-          })
-          target.setAttribute('data-sort_dir', SORTED_DIRECTION.down)
-          target.classList.remove(SORTED_DIRECTION.down)
-          target.classList.add(SORTED_DIRECTION.up)
-          break
-        case SORTED_DIRECTION.down :
-          this.peopleList.sort((a, b)=> a[sortField] > b[sortField] ? -1 : 1)
-          target.setAttribute('data-sort_dir', SORTED_DIRECTION.up)
-          target.classList.remove(SORTED_DIRECTION.up)
-          target.classList.add(SORTED_DIRECTION.down)
-          break
-      }*/
     },
+
     deleteClassList(classList = {}) {
       const classArr = Object.keys(classList)
       Object.keys(this.$refs).forEach(el => {
@@ -94,7 +77,6 @@ name: "TableComponent",
         border: 2px solid #56433D;
     }
     .table th {
-        /*padding: .5rem 1rem;*/
         padding: 10px 20px;
         background: #56433D;
         color: #F9C941;
@@ -119,7 +101,6 @@ name: "TableComponent",
     }
     .table td:first-child {
         border-left: 2px solid #56433D;
-        /*border-right: none;*/
     }
 
     .table tbody td {
@@ -130,20 +111,7 @@ name: "TableComponent",
         background: #eee;
     }
 
-    .card {
-        width: 90%;
-        padding: 1rem;
-        margin-bottom: 1rem;
-        border-radius: 10px;
-        box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.2);
-        background: #fff;
-    }
 
-    .card.center {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
 
     .up:after {
         content: '\2191';

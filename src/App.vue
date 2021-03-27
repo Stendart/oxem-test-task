@@ -36,4 +36,19 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+  .card {
+      width: 90%;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.2);
+      background: #fff;
+  }
+
+  .card.center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
 </style>

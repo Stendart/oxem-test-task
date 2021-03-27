@@ -2,16 +2,18 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
     <TableComponent
-            :peopleList = addPartData()
+            :peopleList = addPartData(pageNum)
             :tableHead = tableHead
             @sortData="sortedBy">
     </TableComponent>
+    <Toggle @click="clickTogle" :pageNum=pageNum></Toggle>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import TableComponent from '@/components/TableComponent.vue'
+import TableComponent from '../components/TableComponent.vue'
+import Toggle from '../components/Toggle';
 
 const SORTED_DIRECTION = {
   up: 'up',
@@ -23,15 +25,17 @@ export default {
   data() {
     return {
       tableHead: ['id', 'firstName', 'lastName', 'email', 'phone'],
-      people: []
+      people: [],
+      pageNum: 0,
+      countElemInPatr: 50
     }
   },
   methods: {
     // делит массив с сервера на части по 50 элементов
-    splitTo(arr, countEl = 50) {
+    splitTo(arr) {
       let i = 0
       return arr.reduce(( prevVal, curVal, curIndex) => {
-        if(curIndex % countEl === 0) {
+        if(curIndex % this.countElemInPatr === 0) {
           prevVal.push([])
           i = 0
         }
@@ -41,38 +45,37 @@ export default {
       }, [])
     },
 
-    addPartData(partNum = 0) { // перенести всё в таблицу обратно и пробовтаь сортировать и отдавать по 50 через computed прям там
-      const people = this.peopleList
-      console.log('People = ', people)
-      return people[partNum]
+    addPartData(partNum = 0) {
+      return this.peopleList[partNum]
     },
 
     sortedBy(sortField, target) {
-      //console.log('sortField ', sortField)
-      //console.log('target ', target)
-      //this.deleteClassList(SORTED_DIRECTION)
-      //const target = this.$refs[sortField][0]
       const arr = this.people
 
       const sortDirection = target.dataset.sort_dir
       switch (sortDirection) {
         case SORTED_DIRECTION.up :
-          arr.sort((a, b)=> {
-            //console.log('Элемент === ', a[sortField])
-            return a[sortField] < b[sortField] ? -1 : 1
-          })
+          arr.sort((a, b)=> a[sortField] < b[sortField] ? -1 : 1)
           target.setAttribute('data-sort_dir', SORTED_DIRECTION.down)
-          target.classList.remove(SORTED_DIRECTION.down)
           target.classList.add(SORTED_DIRECTION.up)
           break
         case SORTED_DIRECTION.down :
           arr.sort((a, b)=> a[sortField] > b[sortField] ? -1 : 1)
           target.setAttribute('data-sort_dir', SORTED_DIRECTION.up)
-          target.classList.remove(SORTED_DIRECTION.up)
           target.classList.add(SORTED_DIRECTION.down)
           break
       }
     },
+
+    clickTogle(direction) {
+      const countPage = this.people.length/this.countElemInPatr
+      console.log('countPage', countPage)
+      if(direction === 'right' && this.pageNum < countPage - 1) {
+        this.pageNum ++
+      } else if (direction === 'left' && this.pageNum > 0) {
+        this.pageNum --
+      }
+    }
   },
   computed: {
     peopleList() {
@@ -93,7 +96,8 @@ export default {
     this.$store.dispatch('getSmallData')
   },
   components: {
-    TableComponent
+    TableComponent,
+    Toggle
   }
 }
 </script>
