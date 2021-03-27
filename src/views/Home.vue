@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
+    <FilterForm @clickSearch="applyFilter"></FilterForm>
     <TableComponent
             :peopleList = addPartData(pageNum)
             :tableHead = tableHead
@@ -11,9 +12,9 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import TableComponent from '../components/TableComponent.vue'
 import Toggle from '../components/Toggle';
+import FilterForm from '../components/FilterForm';
 
 const SORTED_DIRECTION = {
   up: 'up',
@@ -27,7 +28,8 @@ export default {
       tableHead: ['id', 'firstName', 'lastName', 'email', 'phone'],
       people: [],
       pageNum: 0,
-      countElemInPatr: 50
+      countElemInPatr: 50,
+      usedFilter: ''
     }
   },
   methods: {
@@ -46,12 +48,16 @@ export default {
     },
 
     addPartData(partNum = 0) {
+      if(this.usedFilter) {
+        return this.filter(this.usedFilter)
+      }
+      // console.log(this.peopleList[partNum])
       return this.peopleList[partNum]
     },
 
     sortedBy(sortField, target) {
       const arr = this.people
-
+5
       const sortDirection = target.dataset.sort_dir
       switch (sortDirection) {
         case SORTED_DIRECTION.up :
@@ -75,6 +81,23 @@ export default {
       } else if (direction === 'left' && this.pageNum > 0) {
         this.pageNum --
       }
+    },
+
+    applyFilter(subString) {
+      this.usedFilter = subString
+    },
+
+    filter(subString) {
+      let newArray = this.people.filter((element) => {
+        const valArr = Object.values(element)
+          for (let e of valArr) {
+            if(e.toString().indexOf(subString) !== -1) {
+              return true
+            }
+        }
+      })
+      console.log('Filtered Arr ', newArray)
+      return newArray
     }
   },
   computed: {
@@ -88,7 +111,7 @@ export default {
       if(this.people.length > 50) {
         return this.splitTo(this.people)
       } else {
-        return this.people
+        return [this.people]
       }
     }
   },
@@ -97,7 +120,8 @@ export default {
   },
   components: {
     TableComponent,
-    Toggle
+    Toggle,
+    FilterForm
   }
 }
 </script>

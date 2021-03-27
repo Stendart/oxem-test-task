@@ -19,7 +19,7 @@ export default new Vuex.Store({
   actions: {
     async getSmallData({commit}) {
       try {
-        const response = await fetch(BIG_DATA_URL)
+        const response = await fetch(SMALL_DATA_URL)
         const data = await response.json();
         commit('setSmallDate', data)
       } catch (e) {
