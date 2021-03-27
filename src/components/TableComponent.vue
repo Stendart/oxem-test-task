@@ -10,8 +10,8 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
-                <tr v-for="p in peopleList" :key="p.myId">
+            <tbody >
+                <tr v-for="p in peopleList" :key="p.myId" @click="rowClick(p.myId)">
                     <td>{{p.id}}</td>
                     <td>{{p.firstName}}</td>
                     <td>{{p.lastName}}</td>
@@ -57,6 +57,11 @@ name: "TableComponent",
         })
       })
     },
+
+    rowClick(id) {
+      const row = this.peopleList.find((el) => el.myId === id)
+      this.$store.commit('selectRowInfo/setRowData', row)
+    }
   },
 }
 </script>

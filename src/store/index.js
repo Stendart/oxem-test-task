@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import selectRowInfo from './modules/selectRowInfo';
+
 Vue.use(Vuex)
 
 
@@ -30,9 +32,11 @@ export default new Vuex.Store({
   },
   getters: {
     getPeoples(state) {
+      console.log('state.peoples', state.peoples)
       return state.peoples
     }
   },
   modules: {
+    selectRowInfo
   }
 })

@@ -8,6 +8,7 @@
             @sortData="sortedBy">
     </TableComponent>
     <Toggle @click="clickTogle" :pageNum=pageNum></Toggle>
+    <DisplayRowInfo></DisplayRowInfo>
   </div>
 </template>
 
@@ -15,6 +16,7 @@
 import TableComponent from '../components/TableComponent.vue'
 import Toggle from '../components/Toggle';
 import FilterForm from '../components/FilterForm';
+import DisplayRowInfo from '../components/DisplayRowInfo';
 
 const SORTED_DIRECTION = {
   up: 'up',
@@ -121,7 +123,8 @@ export default {
   components: {
     TableComponent,
     Toggle,
-    FilterForm
+    FilterForm,
+    DisplayRowInfo
   }
 }
 </script>
