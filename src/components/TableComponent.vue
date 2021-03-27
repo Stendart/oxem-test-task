@@ -4,22 +4,28 @@
             <caption>People list</caption>
             <thead>
                 <tr>
-                    <th @click="sortedBy($event, 'id')" data-sort_dir="up" >
-                        id
-                    </th>
-                    <th @click="sortedBy($event, 'firstName')" data-sort_dir="up">
-                        firstName
-                    </th>
-                    <th @click="sortedBy($event, 'lastName')" data-sort_dir="up">
-                        lastName
-                    </th>
-                    <th @click="sortedBy($event, 'email')" data-sort_dir="up">
-                        email
-                    </th>
-                    <th @click="sortedBy($event, 'phone')" data-sort_dir="up">
-                        phone
+                    <th v-for="(tabName, index) in tableHead" :key="index"
+                        @click="sortedBy(tabName)" :ref="tabName" data-sort_dir="up">
+                        {{tabName}}
                     </th>
                 </tr>
+<!--                <tr>-->
+<!--                    <th @click="sortedBy($event, 'id')" ref="id" data-sort_dir="up" >-->
+<!--                        id-->
+<!--                    </th>-->
+<!--                    <th @click="sortedBy($event, 'firstName')" ref="firstName" data-sort_dir="up">-->
+<!--                        firstName-->
+<!--                    </th>-->
+<!--                    <th @click="sortedBy($event, 'lastName')" ref="lastName" data-sort_dir="up">-->
+<!--                        lastName-->
+<!--                    </th>-->
+<!--                    <th @click="sortedBy($event, 'email')" ref="email" data-sort_dir="up">-->
+<!--                        email-->
+<!--                    </th>-->
+<!--                    <th @click="sortedBy($event, 'phone')" ref="phone" data-sort_dir="up">-->
+<!--                        phone-->
+<!--                    </th>-->
+<!--                </tr>-->
             </thead>
             <tbody>
                 <tr v-for="p in peopleList" :key="p.id">
@@ -39,41 +45,47 @@ const SORTED_DIRECTION = {
   up: 'up',
   down: 'down'
 }
-let target = ''
 
 export default {
 name: "TableComponent",
   props: {
     peopleList: Array
   },
-  methods: {
-    sortedBy(e, sortField) { // разбить методы на сортировку и удаление классов
-
-      if (target !== e.target) {
-        console.log('НЕ РАВНЫ!')
-        target.classList?.remove(SORTED_DIRECTION.down)
-        target.classList?.remove(SORTED_DIRECTION.up)
-        target = e.target
+  data() {
+      return {
+        tableHead: ['id', 'firstName', 'lastName', 'email', 'phone']
       }
-      const sortDirection = e.target.dataset.sort_dir
-      // console.log('Sorted by', e.target)
+  },
+  methods: {
+    sortedBy(sortField) {
+      const target = this.$refs[sortField][0]
 
-      //e.target.setAttribute('data-sort_dir', SORTED_DIRECTION.down);
+      this.deleteClassList(SORTED_DIRECTION)
+
+      const sortDirection = target.dataset.sort_dir
 
       switch (sortDirection) {
         case SORTED_DIRECTION.up :
           this.peopleList.sort((a, b)=> a[sortField] < b[sortField] ? -1 : 1)
-          e.target.setAttribute('data-sort_dir', SORTED_DIRECTION.down)
-          e.target.classList.remove(SORTED_DIRECTION.down)
-          e.target.classList.add(SORTED_DIRECTION.up)
+          target.setAttribute('data-sort_dir', SORTED_DIRECTION.down)
+          target.classList.remove(SORTED_DIRECTION.down)
+          target.classList.add(SORTED_DIRECTION.up)
           break
         case SORTED_DIRECTION.down :
           this.peopleList.sort((a, b)=> a[sortField] > b[sortField] ? -1 : 1)
-          e.target.setAttribute('data-sort_dir', SORTED_DIRECTION.up)
-          e.target.classList.remove(SORTED_DIRECTION.up)
-          e.target.classList.add(SORTED_DIRECTION.down)
+          target.setAttribute('data-sort_dir', SORTED_DIRECTION.up)
+          target.classList.remove(SORTED_DIRECTION.up)
+          target.classList.add(SORTED_DIRECTION.down)
           break
       }
+    },
+    deleteClassList(classList = {}) {
+      const classArr = Object.keys(classList)
+      Object.keys(this.$refs).forEach(el => {
+        classArr.forEach(className => {
+          this.$refs[el][0].classList?.remove(className)
+        })
+      })
     }
   }
 }
