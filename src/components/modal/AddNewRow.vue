@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form @submit.prevent="onSubmit" class="form-control">
+        <form @submit="onSubmit" class="form-control">
                 <div :class="{'invalid' : this.id.isError}">
                     <label for="id">id</label>
                     <input @focus="focusElem('id')"
@@ -23,7 +23,6 @@
                     <label for="lastName">LastName</label>
                     <input @focus="focusElem('lastName')"
                            type="text"
-                           ref="lastName"
                            id="lastName"
                            v-model.trim="lastName.value">
                     <small v-if="this.lastName.isError">{{this.lastName.isError}}</small>
@@ -33,7 +32,6 @@
                     <label for="email">email</label>
                     <input @focus="focusElem('email')"
                            type="text"
-                           ref="email"
                            id="email"
                            v-model="email.value">
                     <small v-if="this.email.isError">{{this.email.isError}}</small>
@@ -43,13 +41,12 @@
                     <label for="phone">phone</label>
                     <input @focus="focusElem('phone')"
                            type="text"
-                           ref="phone"
                            id="phone"
                            v-model.number="phone.value">
                     <small v-if="this.phone.isError">{{this.phone.isError}}</small>
                 </div>
 
-                <button type="submit" class="btn primary" >Отправить</button>
+                <button class="btn primary" >Отправить</button>
         </form>
     </div>
 </template>

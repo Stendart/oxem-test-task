@@ -34,7 +34,7 @@
 
 <style scoped>
 .card p {
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
     width: 50%;
     display: flex;
     justify-content: space-between;

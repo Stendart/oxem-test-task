@@ -11,12 +11,14 @@
 </template>
 
 <script>
+
   export default {
     name: "FilterForm",
     methods: {
       filter() {
         const search = this.$refs.search
-        this.$emit('clickSearch', search.value)
+        this.$store.commit('filterSubstring/setFilterSubstr', search.value)
+        // this.$emit('clickSearch', search.value)
         this.$refs.search.value = ''
       }
     }
@@ -24,9 +26,6 @@
 </script>
 
 <style scoped>
-
-
-
     .search-wrap {
         display: flex;
         justify-content: space-between;

@@ -1,8 +1,9 @@
 <template>
   <div class="home">
-<!--    <img alt="Vue logo" src="../assets/logo.png">-->
-    <FilterForm @clickSearch="applyFilter"></FilterForm>
-    <button class="btn" @click="showModal = true">Добавить новую запись</button>
+<!--    <FilterForm @clickSearch="applyFilter"></FilterForm>-->
+      <topNavWrapper
+              @showModal="showModal = true"
+      ></topNavWrapper>
     <TableComponent
             :peopleList = addPartData(pageNum)
             :tableHead = tableHead
@@ -18,12 +19,13 @@
 </template>
 
 <script>
-import TableComponent from '../components/TableComponent.vue'
-import Toggle from '../components/Toggle';
-import FilterForm from '../components/FilterForm';
+import TableComponent from '../components/TableComponent'
+import Toggle from '../components/navigate/Toggle';
+// import FilterForm from '../components/navigate/FilterForm';
 import DisplayRowInfo from '../components/DisplayRowInfo';
 import Modal from '../components/modal/Modal';
-import AddNewRow from '../components/AddNewRow';
+import AddNewRow from '../components/modal/AddNewRow';
+import topNavWrapper from '../components/navigate/topNavWrapper';
 
 const SORTED_DIRECTION = {
   up: 'up',
@@ -38,7 +40,6 @@ export default {
       people: [],
       pageNum: 0,
       countElemInPatr: 50,
-      usedFilter: '',
       showModal: false
     }
   },
@@ -58,8 +59,8 @@ export default {
     },
 
     addPartData(partNum = 0) {
-      if(this.usedFilter) {
-        return this.filter(this.usedFilter)
+      if(this.filterStr) {
+        return this.filter(this.filterStr)
       }
       // console.log(this.peopleList[partNum])
       return this.peopleList[partNum]
@@ -67,7 +68,7 @@ export default {
 
     sortedBy(sortField, target) {
       const arr = this.people
-5
+
       const sortDirection = target.dataset.sort_dir
       switch (sortDirection) {
         case SORTED_DIRECTION.up :
@@ -85,7 +86,6 @@ export default {
 
     clickTogle(direction) {
       const countPage = this.people.length/this.countElemInPatr
-      console.log('countPage', countPage)
       if(direction === 'right' && this.pageNum < countPage - 1) {
         this.pageNum ++
       } else if (direction === 'left' && this.pageNum > 0) {
@@ -93,10 +93,11 @@ export default {
       }
     },
 
-    applyFilter(subString) {
+    /*applyFilter(subString) {
       this.usedFilter = subString
-    },
+    },*/
 
+    // фильтраия по всем полям
     filter(subString) {
       let newArray = this.people.filter((element) => {
         const valArr = Object.values(element)
@@ -106,7 +107,6 @@ export default {
             }
         }
       })
-      console.log('Filtered Arr ', newArray)
       return newArray
     }
   },
@@ -123,6 +123,10 @@ export default {
       } else {
         return [this.people]
       }
+    },
+
+    filterStr() {
+      return this.$store.getters['filterSubstring/getFilterSubstr']
     }
   },
   mounted() {
@@ -131,10 +135,11 @@ export default {
   components: {
     TableComponent,
     Toggle,
-    FilterForm,
+    // FilterForm,
     DisplayRowInfo,
     Modal,
-    AddNewRow
+    AddNewRow,
+    topNavWrapper
   }
 }
 </script>
