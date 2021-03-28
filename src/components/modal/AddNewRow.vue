@@ -32,6 +32,7 @@
                     <label for="email">email</label>
                     <input @focus="focusElem('email')"
                            type="text"
+                           ref="email"
                            id="email"
                            v-model="email.value">
                     <small v-if="this.email.isError">{{this.email.isError}}</small>
@@ -41,12 +42,13 @@
                     <label for="phone">phone</label>
                     <input @focus="focusElem('phone')"
                            type="text"
+                           ref="phone"
                            id="phone"
                            v-model.number="phone.value">
                     <small v-if="this.phone.isError">{{this.phone.isError}}</small>
                 </div>
 
-                <button class="btn primary" >Отправить</button>
+                <button class="btn primary" :disabled="!enableBtn">Добавить в таблицу</button>
         </form>
     </div>
 </template>
@@ -79,6 +81,8 @@
         this.isAllLetters(this.lastName)
         this.isCorrectPhone(this.phone)
 
+
+
         if(!this.isErrorValidate) {
           this.$store.commit('addNewRow',
             {
@@ -87,6 +91,7 @@
               lastName: this.lastName.value,
               email: this.email.value,
               phone: this.phone.value,
+              myId: Math.random(),
             })
           this.$emit('close')
         }
@@ -130,11 +135,29 @@
       focusElem(elem) {
         this[elem].isError = false
       }
+    },
+    computed: {
+      enableBtn() {
+        if(this.id.value &&
+          this.firstName.value &&
+          this.lastName.value &&
+          this.email.value &&
+          this.phone.value) {
+          return true
+        }
+        return false
+      }
     }
   }
 </script>
 
 <style scoped>
+    .form-control input {
+       margin: 0 auto;
+    }
+    .form-control div {
+        margin-bottom: 1rem;
+    }
     .invalid input {
         border-color: #e53935;
     }

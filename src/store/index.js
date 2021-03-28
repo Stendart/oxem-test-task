@@ -36,7 +36,6 @@ export default new Vuex.Store({
   },
   getters: {
     getPeoples(state) {
-      console.log('state.peoples', state.peoples)
       return state.peoples
     }
   },
