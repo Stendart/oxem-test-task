@@ -1,7 +1,7 @@
 <template>
     <div class="toggle card">
         <button @click="clickArr('left')" class="btn"> &#8592; </button>
-        <span>{{pageNum + 1}}</span>
+        <span>{{pageNum + 1}} / {{countPage}}</span>
         <button @click="clickArr('right')" class="btn"> &#8594; </button>
     </div>
 </template>
@@ -9,7 +9,7 @@
 <script>
   export default {
     name: "Toggle",
-    props: ['pageNum'],
+    props: ['pageNum', 'countPage'],
     methods: {
       clickArr(direction) {
         this.$emit('click', direction)

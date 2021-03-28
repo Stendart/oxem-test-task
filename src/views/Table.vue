@@ -1,6 +1,7 @@
 <template>
   <div class="home">
 <!--    <FilterForm @clickSearch="applyFilter"></FilterForm>-->
+
       <topNavWrapper
               @showModal="showModal = true"
       ></topNavWrapper>
@@ -8,7 +9,13 @@
             :peopleList = addPartData(pageNum)
             :tableHead = tableHead
             @sortData="sortedBy">
-        <Toggle @click="clickTogle" :pageNum=pageNum></Toggle>
+        <template v-slot:loader>
+            <Animation v-if="!addPartData(pageNum).length"></Animation>
+        </template>
+        <Toggle @click="clickTogle"
+                :pageNum=pageNum
+                :countPage="countPage">
+        </Toggle>
     </TableComponent>
 
     <DisplayRowInfo></DisplayRowInfo>
@@ -21,11 +28,11 @@
 <script>
 import TableComponent from '../components/TableComponent'
 import Toggle from '../components/navigate/Toggle';
-// import FilterForm from '../components/navigate/FilterForm';
 import DisplayRowInfo from '../components/DisplayRowInfo';
 import Modal from '../components/modal/Modal';
 import AddNewRow from '../components/modal/AddNewRow';
 import topNavWrapper from '../components/navigate/topNavWrapper';
+import Animation from '../components/Animation';
 
 const SORTED_DIRECTION = {
   up: 'up',
@@ -39,6 +46,7 @@ export default {
       tableHead: ['id', 'firstName', 'lastName', 'email', 'phone'],
       people: [],
       pageNum: 0,
+      //countPage: null,
       countElemInPatr: 50,
       showModal: false
     }
@@ -85,17 +93,13 @@ export default {
     },
 
     clickTogle(direction) {
-      const countPage = this.people.length/this.countElemInPatr
-      if(direction === 'right' && this.pageNum < countPage - 1) {
+      //this.countPage = Math.ceil(this.people.length/this.countElemInPatr)
+      if(direction === 'right' && this.pageNum < this.countPage - 1) {
         this.pageNum ++
       } else if (direction === 'left' && this.pageNum > 0) {
         this.pageNum --
       }
     },
-
-    /*applyFilter(subString) {
-      this.usedFilter = subString
-    },*/
 
     // фильтраия по всем полям
     filter(subString) {
@@ -125,21 +129,25 @@ export default {
       }
     },
 
+    countPage() {
+      return Math.ceil(this.people.length/this.countElemInPatr)
+    },
+
     filterStr() {
       return this.$store.getters['filterSubstring/getFilterSubstr']
     }
   },
   mounted() {
-    this.$store.dispatch('getSmallData')
+    // this.$store.dispatch('getData')
   },
   components: {
     TableComponent,
     Toggle,
-    // FilterForm,
     DisplayRowInfo,
     Modal,
     AddNewRow,
-    topNavWrapper
+    topNavWrapper,
+    Animation
   }
 }
 </script>

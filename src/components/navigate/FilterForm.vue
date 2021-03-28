@@ -30,7 +30,9 @@
         display: flex;
         justify-content: space-between;
     }
-
+    .form-control label {
+        text-align: left;
+    }
     .btn {
         width: 20%;
     }

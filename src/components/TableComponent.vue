@@ -10,6 +10,7 @@
                     </th>
                 </tr>
             </thead>
+            <slot name="loader"></slot>
             <tbody >
                 <tr v-for="p in peopleList" :key="p.myId" @click="rowClick(p.myId)">
                     <td>{{p.id}}</td>

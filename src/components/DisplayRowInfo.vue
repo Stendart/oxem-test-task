@@ -1,5 +1,5 @@
 <template>
-    <div class="card center" v-if="rowInfo.myId">
+    <div class="card center" v-if="rowInfo.address">
         <p>
             Выбран пользователь <b>{{ rowInfo.firstName + ' ' + rowInfo.lastName}}</b>
         </p>
@@ -18,7 +18,7 @@
         <p>
             Индекс: <b>{{rowInfo.address.zip}}</b>
         </p>
-    </div>
+    </div> <div class="card" v-else>У пользователя не указан адресс</div>
 </template>
 
 <script>
