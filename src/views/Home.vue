@@ -1,14 +1,19 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+<!--    <img alt="Vue logo" src="../assets/logo.png">-->
     <FilterForm @clickSearch="applyFilter"></FilterForm>
+    <button class="btn" @click="showModal = true">Добавить новую запись</button>
     <TableComponent
             :peopleList = addPartData(pageNum)
             :tableHead = tableHead
             @sortData="sortedBy">
+        <Toggle @click="clickTogle" :pageNum=pageNum></Toggle>
     </TableComponent>
-    <Toggle @click="clickTogle" :pageNum=pageNum></Toggle>
+
     <DisplayRowInfo></DisplayRowInfo>
+      <Modal v-if="showModal" @close="showModal = false">
+          <AddNewRow @close="showModal = false"></AddNewRow>
+      </Modal>
   </div>
 </template>
 
@@ -17,6 +22,8 @@ import TableComponent from '../components/TableComponent.vue'
 import Toggle from '../components/Toggle';
 import FilterForm from '../components/FilterForm';
 import DisplayRowInfo from '../components/DisplayRowInfo';
+import Modal from '../components/modal/Modal';
+import AddNewRow from '../components/AddNewRow';
 
 const SORTED_DIRECTION = {
   up: 'up',
@@ -31,7 +38,8 @@ export default {
       people: [],
       pageNum: 0,
       countElemInPatr: 50,
-      usedFilter: ''
+      usedFilter: '',
+      showModal: false
     }
   },
   methods: {
@@ -124,7 +132,9 @@ export default {
     TableComponent,
     Toggle,
     FilterForm,
-    DisplayRowInfo
+    DisplayRowInfo,
+    Modal,
+    AddNewRow
   }
 }
 </script>

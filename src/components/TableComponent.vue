@@ -20,6 +20,7 @@
                 </tr>
             </tbody>
         </table>
+        <slot></slot>
     </div>
 </template>
 
@@ -114,6 +115,7 @@ name: "TableComponent",
 
     .table tbody tr:hover {
         background: #eee;
+        cursor: pointer;
     }
 
 

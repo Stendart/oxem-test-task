@@ -16,6 +16,9 @@ export default new Vuex.Store({
   mutations: {
     setSmallDate(state, payload) {
       state.peoples = payload
+    },
+    addNewRow(state, payload) {
+      state.peoples.unshift(payload)
     }
   },
   actions: {

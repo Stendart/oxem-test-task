@@ -1,15 +1,23 @@
 <template>
-    <div class="card center">
-
-        Выбран пользователь <b>{{ rowInfo.firstName + rowInfo.lastName}}</b>
-        Описание:
-        <textarea>
-        {{rowInfo.description}}
-        </textarea>
-        Адрес проживания: <b>{{rowInfo.address.streetAddress}}</b>
-        Город: <b>{{rowInfo.address.city}}</b>
-        Провинция/штат: <b>{{rowInfo.address.state}}</b>
-        Индекс: <b>{{rowInfo.address.zip}}</b>
+    <div class="card center" v-if="rowInfo.myId">
+        <p>
+            Выбран пользователь <b>{{ rowInfo.firstName + ' ' + rowInfo.lastName}}</b>
+        </p>
+        <p>
+            Описание:<textarea>{{rowInfo.description}}</textarea>
+        </p>
+        <p>
+            Адрес проживания: <b>{{rowInfo.address.streetAddress}}</b>
+        </p>
+        <p>
+            Город: <b>{{rowInfo.address.city}}</b>
+        </p>
+        <p>
+            Провинция/штат: <b>{{rowInfo.address.state}}</b>
+        </p>
+        <p>
+            Индекс: <b>{{rowInfo.address.zip}}</b>
+        </p>
     </div>
 </template>
 
@@ -25,5 +33,10 @@
 </script>
 
 <style scoped>
-
+.card p {
+    margin-bottom: 10px;
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+}
 </style>

@@ -23,5 +23,9 @@
     display: flex;
     justify-content: space-around;
     width: 30%;
+border: 2px solid #56433D;
+
+    /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);*/
+    margin-top: 30px;
 }
 </style>
