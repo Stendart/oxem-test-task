@@ -126,7 +126,7 @@ export default {
     peopleList() {
       this.people = this.$store.getters.getPeoples
 
-      if(this.people.length > 50) {
+      if(this.people.length > this.countElemInPatr) {
         return this.splitTo(this.people)
       } else {
         return [this.people]
