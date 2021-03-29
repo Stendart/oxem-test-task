@@ -17,6 +17,7 @@
     </TableComponent>
 
     <DisplayRowInfo></DisplayRowInfo>
+
       <Modal v-if="showModal" @close="showModal = false">
           <AddNewRow @close="showModal = false"></AddNewRow>
       </Modal>
@@ -66,9 +67,11 @@ export default {
 
     addPartData(partNum = 0) {
       if(this.filterStr) {
-        return this.filter(this.filterStr)
+        // console.log('this.filter(this.filterStr) ', this.splitTo(this.filter(this.filterStr))[partNum])
+
+        return this.splitTo(this.filter(this.filterStr))[partNum]
       }
-      // console.log(this.peopleList[partNum])
+      // console.log('this.peopleList', this.peopleList)
       return this.peopleList[partNum]
     },
 
@@ -79,19 +82,21 @@ export default {
       switch (sortDirection) {
         case SORTED_DIRECTION.up :
           arr.sort((a, b)=> a[sortField] < b[sortField] ? -1 : 1)
-          target.setAttribute('data-sort_dir', SORTED_DIRECTION.down)
-          target.classList.add(SORTED_DIRECTION.up)
+          this.changeAttrandClass(target, 'down', 'up')
           break
         case SORTED_DIRECTION.down :
           arr.sort((a, b)=> a[sortField] > b[sortField] ? -1 : 1)
-          target.setAttribute('data-sort_dir', SORTED_DIRECTION.up)
-          target.classList.add(SORTED_DIRECTION.down)
+          this.changeAttrandClass(target, 'up', 'down')
           break
       }
     },
 
+    changeAttrandClass(target, attr, className) {
+      target.setAttribute('data-sort_dir', SORTED_DIRECTION[attr])
+      target.classList.add(SORTED_DIRECTION[className])
+    },
+
     clickTogle(direction) {
-      //this.countPage = Math.ceil(this.people.length/this.countElemInPatr)
       if(direction === 'right' && this.pageNum < this.countPage - 1) {
         this.pageNum ++
       } else if (direction === 'left' && this.pageNum > 0) {
@@ -101,6 +106,10 @@ export default {
 
     // фильтраия по всем полям
     filter(subString) {
+      if(!subString) {
+        console.log('Filter string is empty')
+        return this.people
+      }
       let newArray = this.people.filter((element) => {
         const valArr = Object.values(element)
           for (let e of valArr) {
@@ -109,13 +118,12 @@ export default {
             }
         }
       })
+
       return newArray
     }
   },
   computed: {
     peopleList() {
-      console.log('Вызван')
-      console.log(this.people)
       this.people = this.$store.getters.getPeoples
 
       if(this.people.length > 50) {
@@ -126,6 +134,10 @@ export default {
     },
 
     countPage() {
+      if(this.filterStr) {
+        this.pageNum = 0
+        return Math.ceil(this.filter(this.filterStr).length/this.countElemInPatr)
+      }
       return Math.ceil(this.people.length/this.countElemInPatr)
     },
 

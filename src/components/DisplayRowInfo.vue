@@ -31,7 +31,6 @@
     name: "DisplayRowInfo",
     computed: {
       rowInfo() {
-        console.log('===', this.$store.getters['selectRowInfo/getRowData'])
         return this.$store.getters['selectRowInfo/getRowData']
       }
     }
