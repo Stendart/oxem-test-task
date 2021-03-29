@@ -1,7 +1,5 @@
 <template>
   <div class="home">
-<!--    <FilterForm @clickSearch="applyFilter"></FilterForm>-->
-
       <topNavWrapper
               @showModal="showModal = true"
       ></topNavWrapper>
