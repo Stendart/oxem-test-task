@@ -116,12 +116,10 @@ export default {
   },
   computed: {
     peopleList() {
+      console.log('Вызван')
+      console.log(this.people)
       this.people = this.$store.getters.getPeoples
-      // Так как в исходных данных id - не уникален, добавляю собственный
-      this.people.forEach((el)=> {
-        el.myId = Math.random();
-      })
-                                          // Можно засунуть тест! Разбивает ли исходный массив на массивы по 50
+
       if(this.people.length > 50) {
         return this.splitTo(this.people)
       } else {
@@ -138,7 +136,8 @@ export default {
     }
   },
   mounted() {
-    // this.$store.dispatch('getData')
+    const dataSize = this.$route.query.dataSize
+    this.$store.dispatch('getData', dataSize)
   },
   components: {
     TableComponent,

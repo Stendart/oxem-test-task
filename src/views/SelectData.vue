@@ -14,8 +14,7 @@
     name: "SelectData",
     methods: {
       selectData(dataSize) {
-        this.$store.dispatch('getData', dataSize)
-        this.$router.push('/table')
+        this.$router.push({ path: '/table', query: { dataSize: dataSize } })
       }
     },
     mounted() {

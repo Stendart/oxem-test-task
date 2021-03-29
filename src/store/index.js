@@ -6,10 +6,6 @@ import filterSubstring from './modules/filterSubstring';
 
 Vue.use(Vuex)
 
-
-//const SMALL_DATA_URL = 'http://www.filltext.com/?rows=32&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}'
-//const BIG_DATA_URL = 'http://www.filltext.com/?rows=1000&id={number|1000}&firstName={firstName}&delay=3&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}'
-
 export default new Vuex.Store({
   state: {
     peoples: []
@@ -33,6 +29,12 @@ export default new Vuex.Store({
       try {
         const response = await fetch(url)
         const data = await response.json();
+
+        // Так как в исходных данных id - не уникален, добавляю собственный
+        data.forEach((el)=> {
+          el.myId = Math.random();
+        })
+
         commit('setDate', data)
       } catch (e) {
         console.log(e.message)
